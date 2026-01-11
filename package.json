@@ -1,0 +1,21 @@
+{
+	"name": "optimizemodelglb",
+	"module": "index.ts",
+	"type": "module",
+	"private": true,
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"scripts": {
+		"start": "bun run index.ts"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"dependencies": {
+		"@gltf-transform/core": "^4.3.0",
+		"@gltf-transform/extensions": "^4.3.0",
+		"@gltf-transform/functions": "^4.3.0",
+		"sharp": "^0.34.5"
+	}
+}
