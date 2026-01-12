@@ -1,18 +1,21 @@
 import { NodeIO } from '@gltf-transform/core';
-import { KHRMeshQuantization, KHRTextureBasisu, KHRMaterialsEmissiveStrength, KHRMaterialsClearcoat, KHRMaterialsSpecular, KHRMaterialsIOR } from '@gltf-transform/extensions';
+import { KHRMeshQuantization, KHRTextureBasisu, KHRMaterialsEmissiveStrength, KHRDracoMeshCompression, KHRMaterialsClearcoat, KHRMaterialsSpecular, KHRMaterialsIOR } from '@gltf-transform/extensions';
 import { resample, textureCompress, dedup, prune } from '@gltf-transform/functions';
 import sharp from 'sharp';
 import { readdir, mkdir } from 'node:fs/promises';
 import path from 'node:path';
+import { execSync } from 'node:child_process';
 
 const INPUT_DIR = './input';
 const OUTPUT_DIR = './output';
+const STEP_DIR = './step';
 
 // Créer le dossier de sortie s'il n'existe pas
 await mkdir(OUTPUT_DIR, { recursive: true });
+await mkdir(STEP_DIR, { recursive: true });
 
 const io = new NodeIO()
-    .registerExtensions([KHRMeshQuantization, KHRTextureBasisu, KHRMaterialsEmissiveStrength, KHRMaterialsClearcoat, KHRMaterialsSpecular, KHRMaterialsIOR]);
+    .registerExtensions([KHRMeshQuantization, KHRTextureBasisu, KHRMaterialsEmissiveStrength, KHRDracoMeshCompression, KHRMaterialsClearcoat, KHRMaterialsSpecular, KHRMaterialsIOR]);
 
 const files = await readdir(INPUT_DIR);
 const glbFiles = files.filter(file => file.endsWith('.glb'));
@@ -23,6 +26,7 @@ for (const file of glbFiles) {
     console.log(`\n📦 Traitement de : ${file}`);
     const inputPath = path.join(INPUT_DIR, file);
     const outputPath = path.join(OUTPUT_DIR, file);
+    const stepPath = path.join(STEP_DIR, file);
 
     try {
         // 1. Lire le document GLB
@@ -45,7 +49,9 @@ for (const file of glbFiles) {
         );
 
         // 3. Écrire le fichier optimisé
-        await io.write(outputPath, document);
+        await io.write(stepPath, document);
+        execSync(`gltf-pipeline -i "${stepPath}" -o "${outputPath}" -d`);
+
         console.log(`✅ Terminé : ${file}`);
 
     } catch (error: unknown) {
