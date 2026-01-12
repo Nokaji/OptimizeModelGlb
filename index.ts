@@ -1,5 +1,5 @@
 import { NodeIO } from '@gltf-transform/core';
-import { KHRMeshQuantization, KHRTextureBasisu } from '@gltf-transform/extensions';
+import { KHRMeshQuantization, KHRTextureBasisu, KHRMaterialsEmissiveStrength, KHRMaterialsClearcoat, KHRMaterialsSpecular, KHRMaterialsIOR } from '@gltf-transform/extensions';
 import { resample, textureCompress, dedup, prune } from '@gltf-transform/functions';
 import sharp from 'sharp';
 import { readdir, mkdir } from 'node:fs/promises';
@@ -12,7 +12,7 @@ const OUTPUT_DIR = './output';
 await mkdir(OUTPUT_DIR, { recursive: true });
 
 const io = new NodeIO()
-    .registerExtensions([KHRMeshQuantization, KHRTextureBasisu]);
+    .registerExtensions([KHRMeshQuantization, KHRTextureBasisu, KHRMaterialsEmissiveStrength, KHRMaterialsClearcoat, KHRMaterialsSpecular, KHRMaterialsIOR]);
 
 const files = await readdir(INPUT_DIR);
 const glbFiles = files.filter(file => file.endsWith('.glb'));
