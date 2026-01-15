@@ -57,6 +57,10 @@ for (const file of glbFiles) {
             console.log(`🧹 Fichier temporaire supprimé : ${stepPath}`);
         });
 
+        rm(inputPath, () => {
+            console.log(`🗑️ Fichier source supprimé : ${inputPath}`);
+        });
+
         console.log(`✅ Terminé : ${file}`);
 
     } catch (error: unknown) {
