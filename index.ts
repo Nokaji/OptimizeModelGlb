@@ -5,6 +5,7 @@ import sharp from 'sharp';
 import { readdir, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
+import { rm } from 'node:fs';
 
 const INPUT_DIR = './input';
 const OUTPUT_DIR = './output';
@@ -51,6 +52,10 @@ for (const file of glbFiles) {
         // 3. Écrire le fichier optimisé
         await io.write(stepPath, document);
         execSync(`gltf-pipeline -i "${stepPath}" -o "${outputPath}" -d`);
+
+        rm(stepPath, () => {
+            console.log(`🧹 Fichier temporaire supprimé : ${stepPath}`);
+        });
 
         console.log(`✅ Terminé : ${file}`);
 
