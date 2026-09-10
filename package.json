@@ -10,12 +10,12 @@
 		"start": "bun run index.ts"
 	},
 	"peerDependencies": {
-		"typescript": "^5"
+		"typescript": "^5.9.3"
 	},
 	"dependencies": {
-		"@gltf-transform/core": "^4.3.0",
-		"@gltf-transform/extensions": "^4.3.0",
-		"@gltf-transform/functions": "^4.3.0",
+		"@gltf-transform/core": "^4.5.0",
+		"@gltf-transform/extensions": "^4.5.0",
+		"@gltf-transform/functions": "^4.5.0",
 		"sharp": "^0.34.5"
 	}
 }
